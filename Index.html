@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quest Harian — Petualangan Kecil Setiap Hari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Kalam:wght@400;700&family=Quicksand:wght@500;600;700&family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="wrap">
+
+  <div class="banner">
+    <div class="stamp">🗺️</div>
+    <h1 class="title">Quest Times</h1>
+    <p class="subtitle">~ Selesaikan petualangan kecil, setiap hari ~</p>
+  </div>
+
+  <div class="player-card" id="playerCard">
+    <div class="avatar-badge"><span class="emoji">🧭</span></div>
+    <div class="player-info">
+      <div class="player-name-row">
+        <span class="player-level" id="levelText">Level 1</span>
+        <span class="player-title" id="titleText">Petualang Pemula</span>
+      </div>
+      <div class="xp-gauge"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+      <div class="xp-label" id="xpLabel">0 / 100 XP</div>
+    </div>
+    <div class="streak-box">
+      <div class="num" id="streakNum">0🔥</div>
+      <div class="lbl">HARI BERUNTUN</div>
+    </div>
+    <button class="sound-toggle-header" id="soundToggleHeader" title="Aktif/nonaktifkan suara">🔊</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="board">📜 Papan Quest</button>
+    <button class="tab-btn" data-tab="journal">📖 Jurnal</button>
+    <button class="tab-btn" data-tab="stats">🏆 Statistik</button>
+    <button class="tab-btn" data-tab="settings">⏰ Pengingat</button>
+  </div>
+
+  <!-- BOARD TAB -->
+  <div id="tab-board">
+    <button class="add-quest-toggle" id="addToggle">✚ Tambah Quest Baru</button>
+    <div class="add-quest-form" id="addForm">
+      <div class="form-row">
+        <div class="grow">
+          <label>Nama Quest</label>
+          <input type="text" id="newTitle" placeholder="Misal: Jogink" maxlength="60">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Kategori</label>
+          <select id="newCategory">
+            <option value="Kesehatan">🩻 Kesehatan< /option>
+            <option value="Belajar">📚 Belajar</option>
+            <option value="Produktivitas">💼 Produktivitas</option>
+            <option value="Sosial">🤝 Sosial</option>
+            <option value="Self-care">✨ Self-care</option>
+          </select>
+        </div>
+        <div>
+          <label>Kesulitan</label>
+          <select id="newDifficulty">
+            <option value="easy">Mudah (10 XP)</option>
+            <option value="medium" selected>Sedang (20 XP)</option>
+            <option value="hard">Sulit (35 XP)</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-submit" id="submitQuest">Simpan Quest</button>
+    </div>
+
+    <div class="filters" id="filters"></div>
+    <div class="quest-grid" id="questGrid"></div>
+  </div>
+
+  <!-- JOURNAL TAB -->
+  <div id="tab-journal" style="display:none;">
+    <div id="journalList"></div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div id="tab-stats" style="display:none;">
+    <div class="stats-grid" id="statsGrid"></div>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div id="tab-settings" style="display:none;">
+    <div class="settings-card">
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">🔔 BUNYI QUEST SELESAI</div>
+          <div class="settings-desc">Denting ceria tiap kamu menyelesaikan quest</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleCompleteSound">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">☀️ PENGINGAT PAGI</div>
+          <div class="settings-desc">Riff pembangkit semangat + notifikasi buat mulai gaspol quest hari ini</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleMorning">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label" style="font-size:13px;">Jam pengingat pagi</div>
+        <input type="time" class="time-input" id="morningTime" value="08:00">
+      </div>
+
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">🌙 PENGINGAT MALAM</div>
+          <div class="settings-desc">Riff penyemangat kalau masih ada quest yang belum ditaklukkan</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="toggleEvening">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label" style="font-size:13px;">Jam pengingat malam</div>
+        <input type="time" class="time-input" id="eveningTime" value="20:00">
+      </div>
+
+      <div class="settings-row" style="border-bottom:none; align-items:flex-start;">
+        <div>
+          <div class="settings-label">📣 IZIN NOTIFIKASI</div>
+          <div class="settings-desc">Diperlukan supaya pengingat muncul sebagai notifikasi. Halaman ini perlu tetap terbuka di salah satu tab browsermu agar pengingat bisa berbunyi.</div>
+          <span class="notif-status default" id="notifStatus">Belum diminta</span>
+        </div>
+        <button class="btn-mini" id="requestNotifBtn">Izinkan</button>
+      </div>
+
+      <div class="settings-row" style="border-bottom:none;">
+        <div class="settings-label" style="font-size:13px;">🎸 COBA RIFF SEMANGAT</div>
+        <button class="btn-mini" id="testSoundBtn">Mainkan!</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note">Menjadi lebih baik dari hari ini dan demi masadepan yang gemilang </footer>
+</div>
+
+<div class="levelup-toast" id="levelUpToast">🎉 Level Up! Sekarang Level <span id="newLevelNum"></span></div>
+
+<script src="script.js"></script>
+</body>
+</html>
